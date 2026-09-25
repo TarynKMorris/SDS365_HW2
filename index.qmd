@@ -1,0 +1,163 @@
+---
+title: "PCA for Image Compression"
+editor_options: 
+  chunk_output_type: inline
+---
+
+This is a Quarto website.
+
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
+```{r}
+#| include: false
+library(readr)
+library(tidyverse)
+im1 <- read_csv("images/image1.csv")
+## Convert data frame into a matrix
+im1 <- data.matrix(im1)
+
+## Read the CSV file into a data frame
+im2 <- read_csv("images/image2.csv")
+## Convert data frame into a matrix
+im2 <- data.matrix(im2)
+
+im3 <- read_csv("images/image3.csv")
+## Convert data frame into a matrix
+im3 <- data.matrix(im3)
+
+im4 <- read_csv("images/image4.csv")
+## Convert data frame into a matrix
+im4 <- data.matrix(im4)
+
+```
+
+```{r}
+
+## cite https://www.geeksforgeeks.org/r-language/how-to-read-many-files-in-r-with-loop/
+
+#img_filepaths = list.files(path = "images", pattern = "\\.csv$")
+images = list()
+for (i in 1:4) {
+  filepath <- paste0("images/image", i, ".csv")
+  # read in image matrix
+  img_mx <- read.csv(filepath) |> data.matrix()
+  images[[i]] <- img_mx
+}
+```
+
+```{r}
+display_matrix <- function(img_mx){
+  image(img_mx,
+        asp = 1,
+        col = gray.colors(256, start = 0, end = 1),
+        useRaster = T,
+        axes = FALSE )}
+
+
+```
+
+```{r}
+process_img_kaprrox <- function(X, k_list){
+  pca = prcomp(X,  center=FALSE, scale.=FALSE)
+  for (k in k_list) {
+    new <- (pca$x[,1:k] # PC scores for k columns
+            %*% t(pca$rotation[,1:k])) # Transpose of first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
+    assign(paste0("X_(", round(k,0), ""),
+           new, envir = parent.frame())
+  }
+  return( c(scores = pca$x, weights = pca$rotation))
+}
+
+get_k_approx <- function(pca, k){
+  new <- (pca$x[,1:k] # PC scores for k columns
+          %*% t(pca$rotation[,1:k])) # Transpose of first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
+  assign(paste0("X_(", round(k,0), ""),
+         new, envir = parent.frame())
+}
+```
+
+```{r}
+image_process <- function(x) {
+  for (k in 1:10) {
+    pca <- prcomp(x, center=FALSE, scale.=FALSE)
+    new <- (pca$x[,1:k] # PC scores for k columns
+            %*% t( ## Transpose of (inversing an orthonormal matrix )
+              pca$rotation[,1:k] # first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
+              ))
+    image(new,
+          asp = 1,
+          col = gray.colors(256, start = 0, end = 1),
+          useRaster = T,
+          axes = FALSE )
+    assign(paste0("photo_", round(k,0)),
+           new, envir = parent.frame())
+    print(paste0("photo_", round(k,0)))
+  }  
+}
+
+```
+
+```{r}
+
+image_process(im3)
+
+```
+
+```{r}
+image_process2 <- function(X) {
+  for (k in 1:10) {
+    pca <- prcomp(X, center=FALSE, scale.=FALSE)
+    V <- t(X) %*% X
+    new <- (pca$x[,1:k] # PC scores for k columns
+            %*% t( ## Transpose of (inversing an orthonormal matrix )
+              diag(eigen(V)$values))) ### UNDER CONSTRUCTION
+    image(new,
+          asp = 1,
+          col = gray.colors(256, start = 0, end = 1),
+          useRaster = T,
+          axes = FALSE )
+    assign(paste0("photo_", round(k,0)),
+           new, envir = parent.frame())
+    print(paste0("photo_", round(k,0)))
+  }  
+}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+### Image Quality Assesment
+doi: 10.3390/jimaging10050113
+## FROM https://rpubs.com/dan_kornacki/imgcompressing_DKornacki
+for(i in vec){
+  photo.pca<-sapply(rgb.pca, function(j) {
+    new.RGB<-j$x[,1:i] %*% t(j$rotation[,1:i])}, simplify="array")
+  assign(paste("photo_", round(i,0), sep=""), photo.pca) 
+  writeJPEG(photo.pca, paste("photo_", round(i,0),"_princ_comp.jpg", sep=""))
+}
+```
+
+```{r}
+#| label: Base Functions
+X = matrix(c(1, 2, -3,
+             2, 1, 1,
+             0, 1, -1), ncol = 3)
+
+## A: Scores with Eigen decomp X^TX
+scores_w_eigen <- function(X){
+  X_TX = t(X) %*% X
+  W_a = eigen(X_TX)$vectors
+  T_a = X %*% W_a
+  }
+
+## B: Scores with Prcomp
+scores_w_pca <- function(X){
+  pca = prcomp(X,  center=FALSE, scale.=FALSE)
+  T_b = pca$x
+  return( c(weights = pca$rotation, scores = pca$x))
+}
+```

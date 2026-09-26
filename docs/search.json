@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "PCA for Image Compression",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\nthree &lt;- image(im3,\n      asp = 1,\n      col = gray.colors(256, start = 0, end = 1),\n      useRaster = T,\n      axes = FALSE )"
+    "text": "Original Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "about.html",
@@ -12,5 +12,75 @@
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html#code",
+    "href": "index.html#code",
+    "title": "PCA for Image Compression",
+    "section": "Code",
+    "text": "Code\n\n## cite https://www.geeksforgeeks.org/r-language/how-to-read-many-files-in-r-with-loop/\n##https://quarto.org/docs/output-formats/html-basics.html\n\nimg_filenames = list.files(path = \"images\", pattern = \"\\\\.csv$\")\nimages = list()\nfor (file in img_filenames) {\n  filepath &lt;- paste0(\"images/\", file)\n  # read in image matrix\n  img_mx &lt;- read.csv(filepath) |&gt; data.matrix()\n  images[[file]] &lt;- img_mx\n}\n\n\ndisplay_matrix &lt;- function(img_mx, caption = \"\"){\n  image(img_mx,\n        asp = 1,\n        col = gray.colors(256, start = 0, end = 1),\n        useRaster = T,\n        axes = FALSE )\n  print(caption)\n  }\n\n\nprocess_img_kaprrox &lt;- function(X, k_list){\n  display_matrix(X, \"Original Image\")\n  pca &lt;- prcomp(X,  center=FALSE, scale.=FALSE)\n  error_list &lt;- list()\n  for (k in k_list) {\n    new_mx &lt;- (pca$x[,1:k] # PC scores for k columns\n            %*% t(pca$rotation[,1:k])) # Transpose ofirst k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors\n    display_matrix(new_mx, paste0(k, \"-Approximation\"))\n    error &lt;- norm((X-new_mx), type = \"F\")\n    error_list &lt;- c(error_list, error)\n    #assign(paste0(\"X_(\", round(k,0), \"\"),new, envir = parent.frame())\n  }\n}\n\n\nprocess_img_kaprrox(images$image3.csv, 1:6)\n\n\n\n\n\n\n\n\n[1] \"Original Image\"\n\n\n\n\n\n\n\n\n\n[1] \"1-Approximation\"\n\n\n\n\n\n\n\n\n\n[1] \"2-Approximation\"\n\n\n\n\n\n\n\n\n\n[1] \"3-Approximation\"\n\n\n\n\n\n\n\n\n\n[1] \"4-Approximation\"\n\n\n\n\n\n\n\n\n\n[1] \"5-Approximation\"\n\n\n\n\n\n\n\n\n\n[1] \"6-Approximation\"\n\n\n\nX = matrix(c(1, 2, -3,\n             2, 1, 1,\n             0, 1, -1), ncol = 3)\n\n## A: Scores with Eigen decomp X^TX\nscores_w_eigen &lt;- function(X){\n  X_TX = t(X) %*% X\n  W_a = eigen(X_TX)$vectors\n  T_a = X %*% W_a\n  }\n\n## B: Scores with Prcomp\nscores_w_pca &lt;- function(X){\n  pca = prcomp(X,  center=FALSE, scale.=FALSE)\n  T_b = pca$x\n  return( c(weights = pca$rotation, scores = pca$x))\n}"
+  },
+  {
+    "objectID": "index.html#image-1",
+    "href": "index.html#image-1",
+    "title": "PCA for Image Compression",
+    "section": "Image 1",
+    "text": "Image 1"
+  },
+  {
+    "objectID": "index.html#image-2",
+    "href": "index.html#image-2",
+    "title": "PCA for Image Compression",
+    "section": "Image 2",
+    "text": "Image 2"
+  },
+  {
+    "objectID": "Testing_features.html",
+    "href": "Testing_features.html",
+    "title": "Testing elements",
+    "section": "",
+    "text": "For a demonstration of a line plot, see Figure 1.\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\n\n\n\n\n\n\nFigure 1: A line plot"
+  },
+  {
+    "objectID": "Testing_features.html#test",
+    "href": "Testing_features.html#test",
+    "title": "Testing elements",
+    "section": "Test",
+    "text": "Test\n\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\n\n\nimage_process &lt;- function(x) {\n  for (k in 1:10) {\n    pca &lt;- prcomp(x, center=FALSE, scale.=FALSE)\n    new &lt;- (pca$x[,1:k] # PC scores for k columns\n            %*% t( ## Transpose of (inversing an orthonormal matrix )\n              pca$rotation[,1:k] # first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors\n              ))\n    image(new,\n          asp = 1,\n          col = gray.colors(256, start = 0, end = 1),\n          useRaster = T,\n          axes = FALSE )\n    assign(paste0(\"photo_\", round(k,0)),\n           new, envir = parent.frame())\n    print(paste0(\"photo_\", round(k,0)))\n  }  \n}\n\n\ndisplay_matrix &lt;- function(img_mx, caption = \"\"){\n  image(img_mx,\n        asp = 1,\n        col = gray.colors(256, start = 0, end = 1),\n        useRaster = T,\n        axes = FALSE )\n  #print(caption)\n  }"
+  },
+  {
+    "objectID": "Testing_features.html#this-column-takes-13-of-the-page",
+    "href": "Testing_features.html#this-column-takes-13-of-the-page",
+    "title": "Testing elements",
+    "section": "This column takes 1/3 of the page",
+    "text": "This column takes 1/3 of the page"
+  },
+  {
+    "objectID": "index.html#image-3",
+    "href": "index.html#image-3",
+    "title": "PCA for Image Compression",
+    "section": "Image 3",
+    "text": "Image 3"
+  },
+  {
+    "objectID": "index.html#image-2-1",
+    "href": "index.html#image-2-1",
+    "title": "PCA for Image Compression",
+    "section": "Image 2",
+    "text": "Image 2"
+  },
+  {
+    "objectID": "index.html#image-4",
+    "href": "index.html#image-4",
+    "title": "PCA for Image Compression",
+    "section": "Image 4",
+    "text": "Image 4"
+  },
+  {
+    "objectID": "index.html#image-1-1",
+    "href": "index.html#image-1-1",
+    "title": "PCA for Image Compression",
+    "section": "Image 1",
+    "text": "Image 1"
   }
 ]

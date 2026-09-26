@@ -1,0 +1,141 @@
+---
+title: "Testing elements"
+output: html_document
+---
+
+```{css formatting, echo=FALSE}
+#header {
+    position: fixed;
+    width: 100%;
+    height: 75px;
+    background-color: white;
+}
+```
+
+::::: grid
+::: g-col-4
+## This column takes 1/3 of the page
+:::
+
+::: g-col-8
+This column takes 2/3 of the page
+:::
+:::::
+
+For a demonstration of a line plot, see @fig-line-plot.
+
+```{r}
+#| label: fig-line-plot
+#| echo: false
+#| fig-cap: A line plot
+
+library(tidyverse)
+x <- rnorm(100, mean = 0, sd = 1)
+y <- rnorm(100, mean = 0, sd = 1)
+
+# Plot the random values
+plot(x, y, main = "Random Normal Plot", col = "blue", pch = 19)
+```
+
+## Test {style="margin-top: 75px;"}
+
+- here
+
+- here
+
+- here
+
+- here
+
+- here
+
+- here
+
+- here
+
+- here
+
+- here
+
+- here
+
+- here
+
+- here
+
+```{r}
+#| eval: false
+#| include: false
+image_process <- function(x) {
+  for (k in 1:10) {
+    pca <- prcomp(x, center=FALSE, scale.=FALSE)
+    new <- (pca$x[,1:k] # PC scores for k columns
+            %*% t( ## Transpose of (inversing an orthonormal matrix )
+              pca$rotation[,1:k] # first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
+              ))
+    image(new,
+          asp = 1,
+          col = gray.colors(256, start = 0, end = 1),
+          useRaster = T,
+          axes = FALSE )
+    assign(paste0("photo_", round(k,0)),
+           new, envir = parent.frame())
+    print(paste0("photo_", round(k,0)))
+  }  
+}
+
+```
+
+```{r}
+#| eval: false
+#| include: false
+
+### Image Quality Assesment
+doi: 10.3390/jimaging10050113
+## FROM https://rpubs.com/dan_kornacki/imgcompressing_DKornacki
+for(i in vec){
+  photo.pca<-sapply(rgb.pca, function(j) {
+    new.RGB<-j$x[,1:i] %*% t(j$rotation[,1:i])}, simplify="array")
+  assign(paste("photo_", round(i,0), sep=""), photo.pca) 
+  writeJPEG(photo.pca, paste("photo_", round(i,0),"_princ_comp.jpg", sep=""))
+}
+```
+
+```{r}
+#| label: Base Functions
+#| eval: false
+#| include: false
+X = matrix(c(1, 2, -3,
+             2, 1, 1,
+             0, 1, -1), ncol = 3)
+
+## A: Scores with Eigen decomp X^TX
+scores_w_eigen <- function(X){
+  X_TX = t(X) %*% X
+  W_a = eigen(X_TX)$vectors
+  T_a = X %*% W_a
+  }
+
+## B: Scores with Prcomp
+scores_w_pca <- function(X){
+  pca = prcomp(X,  center=FALSE, scale.=FALSE)
+  T_b = pca$x
+  return( c(weights = pca$rotation, scores = pca$x))
+}
+
+```
+
+
+```{r}
+#| eval: false
+#| include: false
+display_matrix <- function(img_mx, caption = ""){
+  image(img_mx,
+        asp = 1,
+        col = gray.colors(256, start = 0, end = 1),
+        useRaster = T,
+        axes = FALSE )
+  #print(caption)
+  }
+```
+

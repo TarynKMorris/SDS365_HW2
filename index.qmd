@@ -2,162 +2,244 @@
 title: "PCA for Image Compression"
 editor_options: 
   chunk_output_type: inline
+format:
+  html:
+    toc: true
+    toc-title: Contents
+    toc-location: left
 ---
-
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ```{r}
 #| include: false
-library(readr)
 library(tidyverse)
-im1 <- read_csv("images/image1.csv")
-## Convert data frame into a matrix
-im1 <- data.matrix(im1)
+library(reshape2)
 
-## Read the CSV file into a data frame
-im2 <- read_csv("images/image2.csv")
-## Convert data frame into a matrix
-im2 <- data.matrix(im2)
-
-im3 <- read_csv("images/image3.csv")
-## Convert data frame into a matrix
-im3 <- data.matrix(im3)
-
-im4 <- read_csv("images/image4.csv")
-## Convert data frame into a matrix
-im4 <- data.matrix(im4)
-
+# https://www.pmassicotte.com/posts/2022-08-15-removing-whitespace-around-figures-quarto/
+knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
 ```
 
+
 ```{r}
+#| echo: false
 
 ## cite https://www.geeksforgeeks.org/r-language/how-to-read-many-files-in-r-with-loop/
+##https://quarto.org/docs/output-formats/html-basics.html
 
-#img_filepaths = list.files(path = "images", pattern = "\\.csv$")
+img_filenames = list.files(path = "images", pattern = "\\.csv$")
 images = list()
-for (i in 1:4) {
-  filepath <- paste0("images/image", i, ".csv")
+for (file in img_filenames) {
+  filepath <- paste0("images/", file)
   # read in image matrix
   img_mx <- read.csv(filepath) |> data.matrix()
-  images[[i]] <- img_mx
+  images[[file]] <- img_mx
 }
 ```
 
 ```{r}
-display_matrix <- function(img_mx){
-  image(img_mx,
-        asp = 1,
-        col = gray.colors(256, start = 0, end = 1),
-        useRaster = T,
-        axes = FALSE )}
-
-
+#| echo: false
+get_plot_obj <- function(mat, label = ""){
+  df <- as.data.frame(as.table(mat)) 
+  plot_obj <- ggplot(df, aes(Var1, Var2, fill = Freq))+
+    ggtitle(label)+
+    geom_tile(show.legend = FALSE) +
+    scale_fill_gradient(low = "black", high = "white") +
+    coord_equal()+
+    theme_void()
+  return(plot_obj)
+}
 ```
 
+
 ```{r}
+#| echo: false
+#| layout-ncol: 2
+
 process_img_kaprrox <- function(X, k_list){
-  pca = prcomp(X,  center=FALSE, scale.=FALSE)
+  pca <- prcomp(X,  center=FALSE, scale.=FALSE)
+  original <- get_plot_obj(X)
+  approx_imgs <- list(original)
+  error_list <- c()
+  #print("starting interation over k")
   for (k in k_list) {
-    new <- (pca$x[,1:k] # PC scores for k columns
-            %*% t(pca$rotation[,1:k])) # Transpose of first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
-    assign(paste0("X_(", round(k,0), ""),
-           new, envir = parent.frame())
+    new_mx <- (pca$x[,1:k] # PC scores for k columns
+            %*% t(pca$rotation[,1:k])) # Transpose ofirst k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
+    label <- paste0("K = ", k)
+    plot_obj <- get_plot_obj(new_mx)
+    
+    approx_imgs[[length(approx_imgs)+1]] <- plot_obj
+    error <- norm((X-new_mx), type = "F")
+    error_list <- c(error_list, error)
   }
-  return( c(scores = pca$x, weights = pca$rotation))
+  df_error <- tibble(
+    k = k_list,
+    error = error_list)
+  error_plot <- df_error |> 
+    ggplot(aes(k, error))+
+    geom_point(aes(size =4),show.legend = FALSE)+
+    geom_line()
+  return(list(imgs = approx_imgs, error_plot = error_plot))
 }
 
-get_k_approx <- function(pca, k){
-  new <- (pca$x[,1:k] # PC scores for k columns
-          %*% t(pca$rotation[,1:k])) # Transpose of first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
-  assign(paste0("X_(", round(k,0), ""),
-         new, envir = parent.frame())
-}
-```
-
-```{r}
-image_process <- function(x) {
-  for (k in 1:10) {
-    pca <- prcomp(x, center=FALSE, scale.=FALSE)
-    new <- (pca$x[,1:k] # PC scores for k columns
-            %*% t( ## Transpose of (inversing an orthonormal matrix )
-              pca$rotation[,1:k] # first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
-              ))
-    image(new,
-          asp = 1,
-          col = gray.colors(256, start = 0, end = 1),
-          useRaster = T,
-          axes = FALSE )
-    assign(paste0("photo_", round(k,0)),
-           new, envir = parent.frame())
-    print(paste0("photo_", round(k,0)))
-  }  
-}
 
 ```
 
 ```{r}
-
-image_process(im3)
-
+#| echo: false
+res1 <- process_img_kaprrox(images$image1.csv, 1:9)
 ```
 
-```{r}
-image_process2 <- function(X) {
-  for (k in 1:10) {
-    pca <- prcomp(X, center=FALSE, scale.=FALSE)
-    V <- t(X) %*% X
-    new <- (pca$x[,1:k] # PC scores for k columns
-            %*% t( ## Transpose of (inversing an orthonormal matrix )
-              diag(eigen(V)$values))) ### UNDER CONSTRUCTION
-    image(new,
-          asp = 1,
-          col = gray.colors(256, start = 0, end = 1),
-          useRaster = T,
-          axes = FALSE )
-    assign(paste0("photo_", round(k,0)),
-           new, envir = parent.frame())
-    print(paste0("photo_", round(k,0)))
-  }  
-}
+::::: grid
+::: g-col-8
+## Image 1
+:::
 
+::: g-col-4
+```{r}
+#| echo: false
+plot(res1$error_plot)
 ```
+:::
+:::::
 
 ```{r}
+#| echo: false
+#| layout-ncol: 1
+#| crop: true
+#| fig-cap: 
+#|   - "Original Image"
+#|   - "K = 1"
+#|   - "K = 2"
+#|   - "K = 3"
+#|   - "K = 4"
+#|   - "K = 5"
+#|   - "K = 6"
+#|   - "K = 7"
+#|   - "K = 8"
+#|   - "K = 9"
 
-```
 
-```{r}
-
-### Image Quality Assesment
-doi: 10.3390/jimaging10050113
-## FROM https://rpubs.com/dan_kornacki/imgcompressing_DKornacki
-for(i in vec){
-  photo.pca<-sapply(rgb.pca, function(j) {
-    new.RGB<-j$x[,1:i] %*% t(j$rotation[,1:i])}, simplify="array")
-  assign(paste("photo_", round(i,0), sep=""), photo.pca) 
-  writeJPEG(photo.pca, paste("photo_", round(i,0),"_princ_comp.jpg", sep=""))
+for (im in res1$imgs){
+  plot(im)
 }
 ```
 
+
+
 ```{r}
-#| label: Base Functions
-X = matrix(c(1, 2, -3,
-             2, 1, 1,
-             0, 1, -1), ncol = 3)
+#| echo: false
+res2 <- process_img_kaprrox(images$image2.csv, 1:9)
+```
 
-## A: Scores with Eigen decomp X^TX
-scores_w_eigen <- function(X){
-  X_TX = t(X) %*% X
-  W_a = eigen(X_TX)$vectors
-  T_a = X %*% W_a
-  }
+::::: grid
+::: g-col-8
+## Image 2
+:::
 
-## B: Scores with Prcomp
-scores_w_pca <- function(X){
-  pca = prcomp(X,  center=FALSE, scale.=FALSE)
-  T_b = pca$x
-  return( c(weights = pca$rotation, scores = pca$x))
+::: g-col-4
+```{r}
+#| echo: false
+plot(res2$error_plot)
+```
+:::
+:::::
+
+```{r}
+#| echo: false
+#| layout-ncol: 1
+#| crop: true
+#| fig-cap: 
+#|   - "Original Image"
+#|   - "K = 1"
+#|   - "K = 2"
+#|   - "K = 3"
+#|   - "K = 4"
+#|   - "K = 5"
+#|   - "K = 6"
+#|   - "K = 7"
+#|   - "K = 8"
+#|   - "K = 9"
+
+for (im in res2$imgs){
+  plot(im)
+}
+```
+
+
+```{r}
+#| echo: false
+res3 <- process_img_kaprrox(images$image3.csv, 1:9)
+```
+
+::::: grid
+::: g-col-8
+## Image 3
+:::
+
+::: g-col-4
+```{r}
+#| echo: false
+plot(res3$error_plot)
+```
+:::
+:::::
+
+```{r}
+#| echo: false
+#| layout-ncol: 5
+#| crop: true
+#| fig-cap: 
+#|   - "Original Image"
+#|   - "K = 1"
+#|   - "K = 2"
+#|   - "K = 3"
+#|   - "K = 4"
+#|   - "K = 5"
+#|   - "K = 6"
+#|   - "K = 7"
+#|   - "K = 8"
+#|   - "K = 9"
+
+for (im in res3$imgs){
+  plot(im)
+}
+```
+
+
+```{r}
+#| echo: false
+res4 <- process_img_kaprrox(images$image4.csv, 1:9)
+```
+
+::::: grid
+::: g-col-8
+## Image 4
+:::
+
+::: g-col-4
+```{r}
+#| echo: false
+plot(res4$error_plot)
+```
+:::
+:::::
+
+```{r}
+#| echo: false
+#| layout-ncol: 5
+#| crop: true
+#| fig-cap: 
+#|   - "Original Image"
+#|   - "K = 1"
+#|   - "K = 2"
+#|   - "K = 3"
+#|   - "K = 4"
+#|   - "K = 5"
+#|   - "K = 6"
+#|   - "K = 7"
+#|   - "K = 8"
+#|   - "K = 9"
+
+for (im in res4$imgs){
+  plot(im)
 }
 ```

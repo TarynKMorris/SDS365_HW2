@@ -13,11 +13,11 @@ format:
 #| include: false
 library(tidyverse)
 library(reshape2)
+library(patchwork)
 
 # https://www.pmassicotte.com/posts/2022-08-15-removing-whitespace-around-figures-quarto/
 knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
 ```
-
 
 ```{r}
 #| echo: false
@@ -47,6 +47,56 @@ get_plot_obj <- function(mat, label = ""){
     theme_void()
   return(plot_obj)
 }
+```
+
+```{r}
+#| echo: false
+first_evector_pc <- function(X, i =50){
+  pca <- prcomp(X,  center=FALSE, scale.=FALSE)
+  pc1 <- pca$x[,1:1]
+  evec1 <- pca$rotation[,1:1]
+  df_pc1 <- as.data.frame(as.table(pc1)) 
+  df_evec1 <- as.data.frame(as.table(evec1))
+  
+  new <- pc1 %*% t(evec1)
+  df_new <- as.data.frame(as.table(new)) 
+  
+clear_axes <- theme(
+  axis.text = element_blank(),   
+  axis.ticks = element_blank(),  
+  axis.line = element_blank()  )  
+  
+  p1 <- ggplot(df_pc1, aes(Var1, 1, fill = Freq))+
+    geom_tile(show.legend = FALSE) +
+    scale_fill_gradient(low = "black", high = "white") +
+    clear_axes+
+    labs(x = "First Eigenvector (PC score weight)", y = "")+
+    scale_x_discrete(position = 'top')+
+    ylim(0, 2) +
+    coord_fixed(ratio = 50)
+
+  
+  
+  p2 <- ggplot(df_pc1, aes(1, Var1, fill = Freq))+
+    geom_tile(show.legend = FALSE) +
+    scale_fill_gradient(low = "black", high = "white") +
+    labs(x = "", y ="First Principal Component Scores")+
+    xlim(0, 2) +
+    coord_fixed(ratio = 1/i)+
+    clear_axes
+
+  
+  p3 <- ggplot(df_new, aes(Var1, Var2, fill = Freq))+
+    geom_tile(show.legend = FALSE) +
+    scale_fill_gradient(low = "black", high = "white") +
+    coord_fixed()+
+    theme_void()
+  
+ plot_spacer()+ p1 + p2 + p3+
+    plot_layout()
+}
+
+
 ```
 
 ```{r}
@@ -98,16 +148,18 @@ get_error_plot <- function(X){
 
 ```
 
-
-
-
-
-
 ## Image 1
 
 ::::: grid
 ::: g-col-8
 The approximation is sufficient at K = 1
+
+The white line that is the most distinctive feature of the image is clear in the principle component scores. Outside of that, the values seem to be random-appearing noise.
+
+```{r}
+#| echo: false
+first_evector_pc(images$image1.csv,500)
+```
 :::
 
 ::: g-col-4
@@ -140,12 +192,18 @@ for (im in imgs){
 }
 ```
 
-
 ## Image 2
 
 ::::: grid
 ::: g-col-8
 The approximation is sufficient at K = 1
+
+The first eigenvector, weighting the pc scores, seems capture more information than the pc score itself, as it's inverse seems to correspond exactly to the vertical streaks in the image.
+
+```{r}
+#| echo: false
+first_evector_pc(images$image2.csv,500)
+```
 :::
 
 ::: g-col-4
@@ -182,7 +240,14 @@ for (im in imgs){
 
 ::::: grid
 ::: g-col-8
-The dog can clearly be seen at k = 9, and it appears the decrease in error for each succesive k begins to rapidly diminish around k = 25. For this reason, k = 25 may be a good approximation.
+The dog can clearly be seen at k = 9, and it appears the decrease in error for each successive k begins to rapidly diminish around k = 25. For this reason, k = 25 may be a good approximation.
+
+The first PC and eigenvector describe the rectangular central mass of the dog.
+
+```{r}
+#| echo: false
+first_evector_pc(images$image3.csv,50)
+```
 :::
 
 ::: g-col-4
@@ -215,11 +280,18 @@ for (im in imgs){
 }
 ```
 
-
 ## Image 4
+
 ::::: grid
 ::: g-col-8
-Even the original image is not super clear - an image arround k = 15 may be a good approximation.
+Even the original image is not super clear - an image around k = 15 may be a good approximation.  
+
+The first PC and eigenvector primarily describe the white rectabgle in the upper right.
+
+```{r}
+#| echo: false
+first_evector_pc(images$image4.csv,50)
+```
 :::
 
 ::: g-col-4

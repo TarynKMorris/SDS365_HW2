@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "PCA for Image Compression",
     "section": "",
-    "text": "The approximation is sufficient at K = 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
+    "text": "The approximation is sufficient at K = 1\nThe white line that is the most distinctive feature of the image is clear in the principle component scores. Outside of that, the values seem to be random-appearing noise.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "about.html",
@@ -25,14 +25,14 @@
     "href": "index.html#image-1",
     "title": "PCA for Image Compression",
     "section": "",
-    "text": "The approximation is sufficient at K = 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
+    "text": "The approximation is sufficient at K = 1\nThe white line that is the most distinctive feature of the image is clear in the principle component scores. Outside of that, the values seem to be random-appearing noise.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "index.html#image-2",
     "href": "index.html#image-2",
     "title": "PCA for Image Compression",
     "section": "Image 2",
-    "text": "Image 2\n\n\nThe approximation is sufficient at K = 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
+    "text": "Image 2\n\n\nThe approximation is sufficient at K = 1\nThe first eigenvector, weighting the pc scores, seems capture more information than the pc score itself, as it’s inverse seems to correspond exactly to the vertical streaks in the image.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "Testing_features.html",
@@ -60,7 +60,7 @@
     "href": "index.html#image-3",
     "title": "PCA for Image Compression",
     "section": "Image 3",
-    "text": "Image 3\n\n\nThe dog can clearly be seen at k = 9, and it appears the decrease in error for each succesive k begins to rapidly diminish around k = 25. For this reason, k = 25 may be a good approximation.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9"
+    "text": "Image 3\n\n\nThe dog can clearly be seen at k = 9, and it appears the decrease in error for each successive k begins to rapidly diminish around k = 25. For this reason, k = 25 may be a good approximation.\nThe first PC and eigenvector describe the rectangular central mass of the dog.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "index.html#image-2-1",
@@ -74,7 +74,7 @@
     "href": "index.html#image-4",
     "title": "PCA for Image Compression",
     "section": "Image 4",
-    "text": "Image 4\n\n\nEven the original image is not super clear - an image arround k = 15 may be a good approximation.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9"
+    "text": "Image 4\n\n\nEven the original image is not super clear - an image around k = 15 may be a good approximation.\nThe first PC and eigenvector primarily describe the white rectabgle in the upper right.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "index.html#image-1-1",

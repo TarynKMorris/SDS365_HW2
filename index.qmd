@@ -49,24 +49,38 @@ get_plot_obj <- function(mat, label = ""){
 }
 ```
 
-
 ```{r}
-#| echo: false
-#| layout-ncol: 2
+#| include: false
+get_compressed <- function(X, k){
+  pca <- prcomp(X,  center=FALSE, scale.=FALSE)
+  new_mx <- (pca$x[,1:k] # PC scores for k columns
+            %*% t(pca$rotation[,1:k])) # Transpose ofirst k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
+  error <- norm((X-new_mx), type = "F")
+  return(c(compressed_mat = mat, error = error))
+}
 
-process_img_kaprrox <- function(X, k_list){
+get_images <- function(X, k_list){
   pca <- prcomp(X,  center=FALSE, scale.=FALSE)
   original <- get_plot_obj(X)
   approx_imgs <- list(original)
-  error_list <- c()
-  #print("starting interation over k")
   for (k in k_list) {
     new_mx <- (pca$x[,1:k] # PC scores for k columns
             %*% t(pca$rotation[,1:k])) # Transpose ofirst k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
     label <- paste0("K = ", k)
     plot_obj <- get_plot_obj(new_mx)
-    
     approx_imgs[[length(approx_imgs)+1]] <- plot_obj
+  }
+  return(approx_imgs)
+}
+
+get_error_plot <- function(X){
+  pca <- prcomp(X,  center=FALSE, scale.=FALSE)
+  k_list = 1:(ncol(pca$x))
+  error_list <- c()
+  #print("starting interation over k")
+  for (k in k_list) {
+    new_mx <- (pca$x[,1:k] # PC scores for k columns
+            %*% t(pca$rotation[,1:k])) # Transpose ofirst k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
     error <- norm((X-new_mx), type = "F")
     error_list <- c(error_list, error)
   }
@@ -75,28 +89,31 @@ process_img_kaprrox <- function(X, k_list){
     error = error_list)
   error_plot <- df_error |> 
     ggplot(aes(k, error))+
-    geom_point(aes(size =4),show.legend = FALSE)+
-    geom_line()
-  return(list(imgs = approx_imgs, error_plot = error_plot))
+    geom_point(aes(size =2),show.legend = FALSE)+
+    geom_line()+
+    scale_y_continuous(limits = c(0, NA))
+  return(error_plot)
 }
 
 
 ```
 
-```{r}
-#| echo: false
-res1 <- process_img_kaprrox(images$image1.csv, 1:9)
-```
 
-::::: grid
-::: g-col-8
+
+
+
+
 ## Image 1
+
+::::: grid
+::: g-col-8
+The approximation is sufficient at K = 1
 :::
 
 ::: g-col-4
 ```{r}
 #| echo: false
-plot(res1$error_plot)
+plot(get_error_plot(images$image1.csv))
 ```
 :::
 :::::
@@ -117,28 +134,24 @@ plot(res1$error_plot)
 #|   - "K = 8"
 #|   - "K = 9"
 
-
-for (im in res1$imgs){
+imgs <- get_images(images$image1.csv, 1:9)
+for (im in imgs){
   plot(im)
 }
 ```
 
 
-
-```{r}
-#| echo: false
-res2 <- process_img_kaprrox(images$image2.csv, 1:9)
-```
-
-::::: grid
-::: g-col-8
 ## Image 2
+
+::::: grid
+::: g-col-8
+The approximation is sufficient at K = 1
 :::
 
 ::: g-col-4
 ```{r}
 #| echo: false
-plot(res2$error_plot)
+plot(get_error_plot(images$image2.csv))
 ```
 :::
 :::::
@@ -159,26 +172,23 @@ plot(res2$error_plot)
 #|   - "K = 8"
 #|   - "K = 9"
 
-for (im in res2$imgs){
+imgs <- get_images(images$image2.csv, 1:9)
+for (im in imgs){
   plot(im)
 }
 ```
 
-
-```{r}
-#| echo: false
-res3 <- process_img_kaprrox(images$image3.csv, 1:9)
-```
-
-::::: grid
-::: g-col-8
 ## Image 3
+
+::::: grid
+::: g-col-8
+The dog can clearly be seen at k = 9, and it appears the decrease in error for each succesive k begins to rapidly diminish around k = 25. For this reason, k = 25 may be a good approximation.
 :::
 
 ::: g-col-4
 ```{r}
 #| echo: false
-plot(res3$error_plot)
+plot(get_error_plot(images$image3.csv))
 ```
 :::
 :::::
@@ -199,26 +209,23 @@ plot(res3$error_plot)
 #|   - "K = 8"
 #|   - "K = 9"
 
-for (im in res3$imgs){
+imgs <- get_images(images$image3.csv, 1:9)
+for (im in imgs){
   plot(im)
 }
 ```
 
 
-```{r}
-#| echo: false
-res4 <- process_img_kaprrox(images$image4.csv, 1:9)
-```
-
+## Image 4
 ::::: grid
 ::: g-col-8
-## Image 4
+Even the original image is not super clear - an image arround k = 15 may be a good approximation.
 :::
 
 ::: g-col-4
 ```{r}
 #| echo: false
-plot(res4$error_plot)
+plot(get_error_plot(images$image4.csv))
 ```
 :::
 :::::
@@ -239,7 +246,8 @@ plot(res4$error_plot)
 #|   - "K = 8"
 #|   - "K = 9"
 
-for (im in res4$imgs){
+imgs <- get_images(images$image4.csv, 1:9)
+for (im in imgs){
   plot(im)
 }
 ```

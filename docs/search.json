@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "PCA for Image Compression",
     "section": "",
-    "text": "Original Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9"
+    "text": "The approximation is sufficient at K = 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "about.html",
@@ -24,15 +24,15 @@
     "objectID": "index.html#image-1",
     "href": "index.html#image-1",
     "title": "PCA for Image Compression",
-    "section": "Image 1",
-    "text": "Image 1"
+    "section": "",
+    "text": "The approximation is sufficient at K = 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "index.html#image-2",
     "href": "index.html#image-2",
     "title": "PCA for Image Compression",
     "section": "Image 2",
-    "text": "Image 2"
+    "text": "Image 2\n\n\nThe approximation is sufficient at K = 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "Testing_features.html",
@@ -46,7 +46,7 @@
     "href": "Testing_features.html#test",
     "title": "Testing elements",
     "section": "Test",
-    "text": "Test\n\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\n\n\nimage_process &lt;- function(x) {\n  for (k in 1:10) {\n    pca &lt;- prcomp(x, center=FALSE, scale.=FALSE)\n    new &lt;- (pca$x[,1:k] # PC scores for k columns\n            %*% t( ## Transpose of (inversing an orthonormal matrix )\n              pca$rotation[,1:k] # first k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors\n              ))\n    image(new,\n          asp = 1,\n          col = gray.colors(256, start = 0, end = 1),\n          useRaster = T,\n          axes = FALSE )\n    assign(paste0(\"photo_\", round(k,0)),\n           new, envir = parent.frame())\n    print(paste0(\"photo_\", round(k,0)))\n  }  \n}\n\n\ndisplay_matrix &lt;- function(img_mx, caption = \"\"){\n  image(img_mx,\n        asp = 1,\n        col = gray.colors(256, start = 0, end = 1),\n        useRaster = T,\n        axes = FALSE )\n  #print(caption)\n  }"
+    "text": "Test\n\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere\nhere"
   },
   {
     "objectID": "Testing_features.html#this-column-takes-13-of-the-page",
@@ -60,7 +60,7 @@
     "href": "index.html#image-3",
     "title": "PCA for Image Compression",
     "section": "Image 3",
-    "text": "Image 3"
+    "text": "Image 3\n\n\nThe dog can clearly be seen at k = 9, and it appears the decrease in error for each succesive k begins to rapidly diminish around k = 25. For this reason, k = 25 may be a good approximation.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "index.html#image-2-1",
@@ -74,7 +74,7 @@
     "href": "index.html#image-4",
     "title": "PCA for Image Compression",
     "section": "Image 4",
-    "text": "Image 4"
+    "text": "Image 4\n\n\nEven the original image is not super clear - an image arround k = 15 may be a good approximation.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOriginal Image\n\n\n\n\n\n\n\nK = 1\n\n\n\n\n\n\n\nK = 2\n\n\n\n\n\n\n\nK = 3\n\n\n\n\n\n\n\nK = 4\n\n\n\n\n\n\n\n\n\nK = 5\n\n\n\n\n\n\n\nK = 6\n\n\n\n\n\n\n\nK = 7\n\n\n\n\n\n\n\nK = 8\n\n\n\n\n\n\n\nK = 9"
   },
   {
     "objectID": "index.html#image-1-1",

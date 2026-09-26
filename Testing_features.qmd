@@ -139,3 +139,36 @@ display_matrix <- function(img_mx, caption = ""){
   }
 ```
 
+```{r}
+#| echo: false
+#| layout-ncol: 2
+
+process_img_kaprrox <- function(X, k_list){
+  pca <- prcomp(X,  center=FALSE, scale.=FALSE)
+  original <- get_plot_obj(X)
+  approx_imgs <- list(original)
+  error_list <- c()
+  #print("starting interation over k")
+  for (k in k_list) {
+    new_mx <- (pca$x[,1:k] # PC scores for k columns
+            %*% t(pca$rotation[,1:k])) # Transpose ofirst k cols of the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors
+    label <- paste0("K = ", k)
+    plot_obj <- get_plot_obj(new_mx)
+    
+    approx_imgs[[length(approx_imgs)+1]] <- plot_obj
+    error <- norm((X-new_mx), type = "F")
+    error_list <- c(error_list, error)
+  }
+  df_error <- tibble(
+    k = k_list,
+    error = error_list)
+  error_plot <- df_error |> 
+    ggplot(aes(k, error))+
+    geom_point(aes(size =4),show.legend = FALSE)+
+    geom_line()+
+    scale_y_continuous(limits = c(0, NA))
+  return(list(imgs = approx_imgs, error_plot = error_plot))
+}
+
+
+```
